@@ -1,0 +1,74 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank</title>
+    <style>
+        .bank-table {
+            border: 2px solid black;
+            background-color: red;
+            width: 100%;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .bank-table th, .bank-table td {
+            padding: 8px;
+            text-align: left;
+        }
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <span id="bank"></span>
+
+    <script>
+        class Bank {
+            constructor(id, bankname, branch_city = [], atm = {}) {
+                this.id = id;
+                this.bankname = bankname;
+                this.branch_city = branch_city;
+                this.atm = atm;
+            }
+
+            toBank() {
+                const city = this.branch_city.join(", ");
+                const atmLocations = Object.entries(this.atm)
+                    .map(([key, value]) => `${key}: ${value}`)
+                    .join(", ");
+
+                return `
+                    <table class="bank-table">
+                        <thead>
+                            <tr><th colspan="2">Bank Details</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Bank ID</td><td>${this.id}</td></tr>
+                            <tr><td class="bold">Bank Name</td><td>${this.bankname}</td></tr>
+                            <tr><td>Bank Branch</td><td>${city}</td></tr>
+                            <tr><td>Head ATM</td><td>${atmLocations}</td></tr>
+                        </tbody>
+                    </table>`;
+            }
+        }
+
+        // Array of Bank objects
+        const banks = [
+            new Bank(2012938, 'Indian Bank', ['Chennai', 'Madurai', 'Salem', 'Tirunelveli', 'Trichy'], { 'Head ATM': 'Chennai' }),
+            new Bank(2012939, 'State Bank', ['Delhi', 'Mumbai', 'Bangalore'], { 'Head ATM': 'Mumbai' }),
+            new Bank(2012940, 'Axis Bank', ['Pune', 'Hyderabad', 'Chandigarh'], { 'Head ATM': 'Pune' }),
+            new Bank(2012940, 'Gold Bank', ['Pune', 'Hyderabad', 'Chandigarh'], { 'Head ATM': 'Pune' })
+        ];
+
+        // Render all banks using a for loop
+        let banksHtml = "";
+        for (const bank of banks) {
+            banksHtml += bank.toBank();
+        }
+
+        document.getElementById('bank').innerHTML = banksHtml;
+    </script>
+</body>
+</html>
